@@ -7,24 +7,28 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import icebreaker.project.service.QuestionsService;
 import icebreaker.project.service.TeamCodesService;
 
 @CrossOrigin
 @RestController
-@RequestMapping("api/code")
-public class TeamCodesController {
+@RequestMapping("api/questions")
+public class QuestionsController {
 	
+	@Autowired
+	QuestionsService questionsService;
 	@Autowired
 	TeamCodesService teamCodesService;
 	
-	@GetMapping("/member")
-	public String getMemberCode(@RequestParam String leaderCode) {
-		return teamCodesService.getMemberCode(leaderCode);
-	}
-	
-	@GetMapping("/verification")
-	public boolean verifyMemberCode(@RequestParam String memberCode) {
-		return teamCodesService.verifyMemberCode(memberCode);
+	@GetMapping("/all")
+	public String[] getAllQuestions(@RequestParam String memberCode) {
+		boolean isValid = teamCodesService.verifyMemberCode(memberCode);
+		
+		if (isValid) {
+			return questionsService.getAllQuestions(memberCode);
+		} else {
+			return null;
+		}
 	}
 
 }

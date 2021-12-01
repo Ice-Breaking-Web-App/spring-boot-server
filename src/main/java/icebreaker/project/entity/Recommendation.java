@@ -2,6 +2,8 @@ package icebreaker.project.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 import com.sun.istack.NotNull;
@@ -14,22 +16,18 @@ import lombok.NoArgsConstructor;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-public class TeamCodes {
+public class Recommendation {
 
 	@Id
-	private Long teamId;
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Long id;
 	
 	@NotNull
-	@Column(length = 10, unique = true)
-	private String leaderCode;
-	
+	@Column(length = 6)
+	private String tag;
+		
 	@NotNull
-	@Column(length = 10, unique = true)
-	private String memberCode;
-	
-	public TeamCodes(String leaderCode, String memberCode) {
-		this.setLeaderCode(leaderCode);
-		this.setMemberCode(memberCode);
-	}
-	
+	@Column(length = 30, unique = true)
+	private String question;
+
 }
