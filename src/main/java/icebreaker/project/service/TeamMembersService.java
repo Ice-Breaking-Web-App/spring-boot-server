@@ -34,6 +34,7 @@ public class TeamMembersService {
 			TeamMembers teamMember = new TeamMembers(teamId, members[i]);
 			if (members[i].equals(leaderName)) {
 				teamMember.setLeader(true);
+				teamMember.setStatus(MemberStatus.joining);
 			}
 			teamMemberList.add(teamMember);
 		}

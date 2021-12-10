@@ -28,7 +28,7 @@ public class Answers {
 
 	@NotNull
 	@Column
-	private int qNumber;
+	private int questionNumber;
 
 	@NotNull
 	@Column(length = 7)
@@ -40,7 +40,7 @@ public class Answers {
 	
 	public Answers(Long teamId, int qNumber, String memberName, String aText) {
 		this.setTeamId(teamId);
-		this.setQNumber(qNumber);
+		this.setQuestionNumber(qNumber);
 		this.setMemberName(memberName);
 		this.setAText(aText);
 	}

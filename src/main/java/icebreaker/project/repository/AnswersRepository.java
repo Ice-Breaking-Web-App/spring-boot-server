@@ -8,8 +8,8 @@ import icebreaker.project.entity.Answers;
 
 public interface AnswersRepository extends JpaRepository<Answers, Long> {
 	
-	public List<Answers> findByTeamIdAndQNumber(Long teamId, int qNumber);
+	public List<Answers> findByTeamIdAndQuestionNumber(Long teamId, int questionNumber);
 	public List<Answers> findByTeamIdAndMemberName(Long teamId, String memberName);
-	public Answers findByTeamIdAndQNumberAndMemberName(Long teamId, int qNumber, String memberName);
+	public Answers findByTeamIdAndQuestionNumberAndMemberName(Long teamId, int questionNumber, String memberName);
 	
 }

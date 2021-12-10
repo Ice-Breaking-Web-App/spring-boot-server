@@ -26,7 +26,7 @@ public class AnswersService {
 
 	public List<AnswersNameSet> getAllAnswers(String memberCode, int qNumber) {		
 		Long teamId = teamCodesService.getTeamId(memberCode);
-		List<Answers> allAnswers =  answersRepository.findByTeamIdAndQNumber(teamId, qNumber);
+		List<Answers> allAnswers =  answersRepository.findByTeamIdAndQuestionNumber(teamId, qNumber);
 		List<AnswersNameSet> answers = new ArrayList<AnswersNameSet>();
 		
 		for (int i = 0; i < allAnswers.size(); i++) {
@@ -49,7 +49,7 @@ public class AnswersService {
 	
 	public void updateMemberAnswer(String memberCode, String memberName, AnswersQNumberSet data) { // qNumber, aText
 		Long teamId = teamCodesService.getTeamId(memberCode);
-		Answers answer =  answersRepository.findByTeamIdAndQNumberAndMemberName(teamId, data.qNumber, memberName);
+		Answers answer =  answersRepository.findByTeamIdAndQuestionNumberAndMemberName(teamId, data.qNumber, memberName);
 		answer.setAText(data.aText);
 		answersRepository.saveAndFlush(answer);
 	}
