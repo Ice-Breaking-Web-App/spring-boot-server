@@ -17,7 +17,7 @@ public class TeamInfoService {
 	@Autowired
 	TeamCodesService teamCodesService;
 	
-	public Long createTeam(InfoSet teamInfo) { // service method -> 실질적 데이터 처리 및 DB 접근 부분
+	public Long createTeam(InfoSet teamInfo) {
 		TeamInfo infoData = new TeamInfo(teamInfo.teamName, teamInfo.leaderName, teamInfo.teamColor, teamInfo.questions.length, teamInfo.members.length);
 		TeamInfo savedData = teamInfoRepository.saveAndFlush(infoData);
 		return savedData.getTeamId();
@@ -26,6 +26,28 @@ public class TeamInfoService {
 	public TeamInfo getTeamInfo(String memberCode) {
 		Long teamId = teamCodesService.getTeamId(memberCode);
 		return teamInfoRepository.findById(teamId).get();
+	}
+	
+	public String getTeamName(String memberCode) {
+		Long teamId = teamCodesService.getTeamId(memberCode);
+		return teamInfoRepository.findById(teamId).get().getTeamName();
+	}
+	
+	public boolean getIsPaid(String memberCode) {
+		Long teamId = teamCodesService.getTeamId(memberCode);
+		return teamInfoRepository.findById(teamId).get().isPaid();
+	}
+	
+	public void updateIsPaid(String memberCode, boolean isPaid) {
+		Long teamId = teamCodesService.getTeamId(memberCode);
+		TeamInfo infoData = teamInfoRepository.findById(teamId).get();
+		infoData.setPaid(isPaid);
+		teamInfoRepository.saveAndFlush(infoData);
+	}
+	
+	public int getQCount(Long teamId) {
+		TeamInfo infoData = teamInfoRepository.getById(teamId);
+		return infoData.getQCount();
 	}
 	
 	@NoArgsConstructor

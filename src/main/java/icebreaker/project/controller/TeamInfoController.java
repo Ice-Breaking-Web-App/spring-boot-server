@@ -3,6 +3,7 @@ package icebreaker.project.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -23,7 +24,7 @@ import icebreaker.project.service.TeamMembersService;
 public class TeamInfoController {
 	
 	@Autowired
-	TeamInfoService teamInfoService; // 싱글톤 패턴
+	TeamInfoService teamInfoService;
 	@Autowired
 	TeamCodesService teamCodesService;
 	@Autowired
@@ -31,10 +32,10 @@ public class TeamInfoController {
 	@Autowired
 	QuestionsService questionsService;
 	
-	@PutMapping("/create") // Post, Patch 등 다른 맵핑이 필요하다면 위에 import에 추가
+	@PutMapping("/create")
 	public CodeSet createTeam(@RequestBody InfoSet teamInfo) { // RequestBody, RequestParam
-		Long teamId = teamInfoService.createTeam(teamInfo); // service 호출
-		CodeSet codeSet = teamCodesService.createTeamCodes(teamId); // 메소드의 return 타입과 같은 타입의 데이터 return
+		Long teamId = teamInfoService.createTeam(teamInfo);
+		CodeSet codeSet = teamCodesService.createTeamCodes(teamId);
 		questionsService.setAllQuestions(teamInfo.questions, teamId);
 		teamMembersService.createMembers(teamInfo.leaderName, teamInfo.members, teamId);
 		return codeSet;
@@ -48,6 +49,31 @@ public class TeamInfoController {
 			return teamInfoService.getTeamInfo(memberCode);
 		} else {
 			return null;
+		}
+	}
+	
+	@GetMapping("/name")
+	public String getTeamName(@RequestParam String memberCode) {
+		return teamInfoService.getTeamName(memberCode);
+	}
+	
+	@GetMapping("/pay")
+	public boolean getIsPaid(@RequestParam String memberCode) {
+		boolean isValid = teamCodesService.verifyMemberCode(memberCode);
+		
+		if (isValid) {
+			return teamInfoService.getIsPaid(memberCode);
+		} else {
+			return false;
+		}
+	}
+	
+	@PatchMapping("/pay")
+	public void updateIsPaid(@RequestParam String memberCode, boolean isPaid) {
+		boolean isValid = teamCodesService.verifyMemberCode(memberCode);
+		
+		if (isValid) {
+			teamInfoService.updateIsPaid(memberCode, isPaid);
 		}
 	}
 

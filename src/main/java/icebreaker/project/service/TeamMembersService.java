@@ -1,6 +1,7 @@
 package icebreaker.project.service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,8 @@ public class TeamMembersService {
 	TeamInfoRepository teamInfoRepository;
 	@Autowired
 	TeamCodesService teamCodesService;
+	@Autowired
+	TeamInfoService teamInfoService;
 	
 	public void createMembers(String leaderName, String[] members, Long teamId) {
 		List<TeamMembers> teamMemberList = new ArrayList<TeamMembers>();
@@ -57,16 +60,11 @@ public class TeamMembersService {
 		return statusSet;
 	}
 	
-	public void updateMemberStatus(String memberCode, String memberName, String status) {
+	public void updateMemberStatus(String memberCode, String memberName, MemberStatus status) {
 		Long teamId = teamCodesService.getTeamId(memberCode);
 		TeamMembers teamMember = teamMembersRepository.findByTeamIdAndMemberName(teamId, memberName);
-		
-		if (status.equals("joining")) {
-			teamMember.setStatus(MemberStatus.joining);
-		} else if (status.equals("done")) {
-			teamMember.setStatus(MemberStatus.done);
-		}
-		teamMembersRepository.flush();
+		teamMember.setStatus(status);
+		teamMembersRepository.saveAndFlush(teamMember);
 	}
 	
 	public void setMemberScore(String memberCode, String memberName, int score) {
@@ -85,7 +83,42 @@ public class TeamMembersService {
 			ScoreSet newSet = new ScoreSet(member.getMemberName(), member.getScore());
 			scoreSetList.add(newSet);
 		}
+		Collections.sort(scoreSetList, Collections.reverseOrder());
 		return scoreSetList;
+	}
+	
+	public void updateALast(Long teamId, String memberName, int qNumber) {
+		TeamMembers member = teamMembersRepository.findByTeamIdAndMemberName(teamId, memberName);
+		int qCount = teamInfoService.getQCount(teamId);
+		if (qCount == qNumber) {
+			member.setStatus(MemberStatus.done);
+		}
+		member.setALast(qNumber);
+		teamMembersRepository.saveAndFlush(member);
+		updateBoardAvailability(teamId);
+	}
+	
+	public int getALast(Long teamId, String memberName) {
+		TeamMembers member = teamMembersRepository.findByTeamIdAndMemberName(teamId, memberName);
+		return member.getALast();
+	}
+	
+	public void updateBoardAvailability(Long teamId) {
+		List<TeamMembers> memberList = teamMembersRepository.findByTeamId(teamId);
+		int count = 0;
+		for (int i = 0; i < memberList.size(); i++) {
+			if (memberList.get(i).getStatus().equals(MemberStatus.done)) {
+				count++;
+				continue;
+			} else {
+				break;
+			}
+		}
+		if (count == memberList.size()) {
+			TeamInfo infoData = teamInfoRepository.findById(teamId).get();
+			infoData.setBoardAvailable(true);
+			teamInfoRepository.saveAndFlush(infoData);
+		}
 	}
 	
 	@NoArgsConstructor
@@ -104,9 +137,20 @@ public class TeamMembersService {
 	
 	@NoArgsConstructor
 	@AllArgsConstructor
-	public static class ScoreSet {
+	public static class ScoreSet implements Comparable<ScoreSet> {
 		public String memberName;
 		public int score;
+		
+		@Override
+		public int compareTo(ScoreSet scoreSet) {
+			if (scoreSet.score < score) {
+				return 1;
+			} else if (scoreSet.score > score) {
+				return -1;
+			} else {
+				return 0;
+			}
+		}
 	}
 	
 }

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import icebreaker.project.entity.TeamMembers;
+import icebreaker.project.entity.TeamMembers.MemberStatus;
 import icebreaker.project.service.TeamCodesService;
 import icebreaker.project.service.TeamMembersService;
 import icebreaker.project.service.TeamMembersService.ScoreSet;
@@ -37,12 +38,12 @@ public class TeamMembersController {
 		}
 	}
 	
-	@PatchMapping("/status")
-	public void updateMemberStatus(@RequestParam String memberCode, String memberName, String status) {
+	@PatchMapping("/join")
+	public void updateMemberStatusToJoining(@RequestParam String memberCode, String memberName) {
 		boolean isValid = teamCodesService.verifyMemberCode(memberCode);
 		
 		if (isValid) {
-			teamMembersService.updateMemberStatus(memberCode, memberName, status);
+			teamMembersService.updateMemberStatus(memberCode, memberName, MemberStatus.joining);
 		}
 	}
 	

@@ -37,5 +37,12 @@ public class Answers {
 	@NotNull
 	@Column(length = 50)
 	private String aText;
+	
+	public Answers(Long teamId, int qNumber, String memberName, String aText) {
+		this.setTeamId(teamId);
+		this.setQNumber(qNumber);
+		this.setMemberName(memberName);
+		this.setAText(aText);
+	}
 		
 }
