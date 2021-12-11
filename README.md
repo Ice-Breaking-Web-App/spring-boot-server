@@ -23,7 +23,7 @@
 |GET|/member/score/all|memberCode|-|scoreList|팀원 코드를 받아서 점수를 내림차순으로 정렬한 팀원 리스트를 조회한다|
 |GET|/recommend/tags|-|-|tagList|랜덤으로 태그 3개가 담긴 리스트를 조회한다|
 |GET|/recommend/question|tag|-|question|태그를 받아서 해당 태그와 관련된 질문 1개를 랜덤으로 반환한다|
-|PUT|	/team/create|	-	|teamName, leaderName, teamColor, questions, members	leaderCode,memberCode	|정보를 받아서 팀을 생성한 후, 팀장 코드와 팀원 코드를 반환한다|
+|PUT|	/team/create|	-	|teamName, leaderName, teamColor, questions, members|	leaderCode,memberCode	|정보를 받아서 팀을 생성한 후, 팀장 코드와 팀원 코드를 반환한다|
 
 
 GET	/team/info	memberCode	-	teamInfo	팀원 코드를 받아서 현재 팀 정보를 반환한다 (팀장도 팀원 코드 사용 가능, 하지만 로컬에 팀장 코드가 저장된 경우에는 팀장으로 인식)
