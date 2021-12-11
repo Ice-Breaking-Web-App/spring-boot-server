@@ -56,9 +56,16 @@ public class AnswersService {
 	
 	public void createMemberAnswer(String memberCode, String memberName, AnswersQNumberSet data) { // qNumber, aText
 		Long teamId = teamCodesService.getTeamId(memberCode);
-		Answers answer = new Answers(teamId, data.qNumber, memberName, data.aText);
-		answersRepository.saveAndFlush(answer);
-		teamMembersService.updateALast(teamId, memberName, data.qNumber);
+		Answers answer = answersRepository.findByTeamIdAndQuestionNumberAndMemberName(teamId, data.qNumber, memberName);
+		
+		if (answer == null) {
+			Answers newAnswer = new Answers(teamId, data.qNumber, memberName, data.aText);
+			answersRepository.saveAndFlush(newAnswer);
+			teamMembersService.updateALast(teamId, memberName, data.qNumber);
+		} else {
+			answer.setAText(data.aText);
+			answersRepository.saveAndFlush(answer);
+		}
 	}
 	
 	public MemberProgressSet getProgress(String memberCode, String memberName) {

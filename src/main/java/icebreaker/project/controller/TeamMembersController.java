@@ -16,6 +16,7 @@ import icebreaker.project.service.TeamCodesService;
 import icebreaker.project.service.TeamMembersService;
 import icebreaker.project.service.TeamMembersService.ScoreSet;
 import icebreaker.project.service.TeamMembersService.StatusSet;
+import icebreaker.project.service.TeamMembersService.StatusSubSet;
 
 @CrossOrigin
 @RestController
@@ -27,12 +28,23 @@ public class TeamMembersController {
 	@Autowired
 	TeamCodesService teamCodesService;
 	
-	@GetMapping("/status")
+	@GetMapping("/status/all")
 	public StatusSet getTeamStatus(@RequestParam String memberCode) {
 		boolean isValid = teamCodesService.verifyMemberCode(memberCode);
 		
 		if (isValid) {
 			return teamMembersService.getTeamStatus(memberCode);
+		} else {
+			return null;
+		}
+	}
+	
+	@GetMapping("/status/member")
+	public StatusSubSet getMemberStatus(@RequestParam String memberCode, String memberName) {
+		boolean isValid = teamCodesService.verifyMemberCode(memberCode);
+		
+		if (isValid) {
+			return teamMembersService.getMemberStatus(memberCode, memberName);
 		} else {
 			return null;
 		}

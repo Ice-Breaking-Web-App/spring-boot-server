@@ -61,6 +61,14 @@ public class TeamMembersService {
 		return statusSet;
 	}
 	
+	public StatusSubSet getMemberStatus(String memberCode, String memberName) {
+		Long teamId = teamCodesService.getTeamId(memberCode);
+		TeamMembers member = teamMembersRepository.findByTeamIdAndMemberName(teamId, memberName);
+		TeamInfo teamInfo = teamInfoRepository.findById(teamId).get();
+		boolean isGameDone = member.getScore() == 0 ? false : true;
+		return new StatusSubSet(member.getStatus(), teamInfo.isBoardAvailable(), isGameDone);
+	}
+	
 	public void updateMemberStatus(String memberCode, String memberName, MemberStatus status) {
 		Long teamId = teamCodesService.getTeamId(memberCode);
 		TeamMembers teamMember = teamMembersRepository.findByTeamIdAndMemberName(teamId, memberName);
@@ -127,6 +135,14 @@ public class TeamMembersService {
 	public static class StatusSet {
 		public List<MemberStatusSet> statusList;
 		public boolean isBoardAvailable;
+	}
+	
+	@NoArgsConstructor
+	@AllArgsConstructor
+	public static class StatusSubSet {
+		public MemberStatus status;
+		public boolean isBoardAvailable;
+		public boolean isGameDone;
 	}
 	
 	@NoArgsConstructor
