@@ -5,7 +5,7 @@
 ### API 명세서
 |Method|Path|RequestParam|RequestBody|Return|Summary|
 |------|----|------------|-----------|------|-------|
-|PUT|	/team/create|	-	|teamName, leaderName, teamColor, questions, members|	leaderCode,memberCode|정보를 받아서 팀을 생성한 후, 팀장 코드와 팀원 코드를 반환한다|
+|PUT|	/team/create|	-	|teamName, leaderName, teamColor, questions, members|	leaderCode, memberCode|정보를 받아서 팀을 생성한 후, 팀장 코드와 팀원 코드를 반환한다|
 |GET|	/team/info|	memberCode|-|teamInfo|팀원 코드를 받아서 현재 팀 정보를 반환한다 (팀장도 팀원 코드 사용 가능, 하지만 로컬에 팀장 코드가 저장된 경우에는 팀장으로 인식)|
 |GET|	/team/name|	memberCode|-|teamName|팀원 코드를 받아서 팀 이름을 조회한다|
 |PATCH|	/team/pay|	memberCode, isPaid|-|-|팀원 코드를 받아서 결제 여부를 변경한다|
