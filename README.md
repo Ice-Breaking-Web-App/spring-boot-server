@@ -23,6 +23,6 @@
 |GET|	/answers/member|memberCode, memberName|-|answers|팀원 코드와 팀원 이름을 받아서 해당 팀원이 여태까지 작성한 답변들을 반환한다|
 |GET|	/answers/progress|memberCode, memberName|-|qCount, aLast|팀원 코드와 팀원 이름을 받아서 총 질문의 개수와 작성 완료한 답변의 수를 반환한다|
 |PATCH|	/member/score/member|memberCode, memberName, score|-|-|팀원 코드와 팀원 이름을 바아서 해당 팀원의 점수를 입력한다|
-|GET|	/member/score/all|memberCode|-|scoreList	팀원 코드를 받아서 점수를 내림차순으로 정렬한 팀원 리스트를 반환한다|
+|GET|	/member/score/all|memberCode|-|scoreList|팀원 코드를 받아서 점수를 내림차순으로 정렬한 팀원 리스트를 반환한다|
 |GET|	/recommend/tags|-|-|tagList|랜덤으로 태그 3개가 담긴 리스트를 반환한다|
 |GET|	/recommend /question|tag|-|	question|	태그를 받아서 해당 태그와 관련된 질문 1개를 랜덤으로 반환한다|
